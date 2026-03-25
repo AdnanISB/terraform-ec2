@@ -1,0 +1,4 @@
+aws/
+dist/
+*.so
+libpython*
