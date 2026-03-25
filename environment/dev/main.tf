@@ -23,7 +23,7 @@ resource "local_file" "private_key" {
 } 
 
 # Call EC2 module (without count.index)
-module "frontend_ec2" {
+module "dev_ec2" {
   source         = "../../modules/ec2"
   environment    = var.environment
   ami            = var.ami
@@ -31,14 +31,16 @@ module "frontend_ec2" {
   instance_type  = var.instance_type
   ec2_username   = var.ec2_username
   key_name       = aws_key_pair.default.key_name  # pass actual key name
-  ec2_sg         = "frontend-${var.environment}"
+  ec2_sg         = "dev-${var.environment}"
   ssh_port       = var.ssh_port
   tags           = {
-    Name = "Frontend-${var.environment}"
+    Name = "Dev-${var.environment}"
     Environment = "dev"
   }  # pass plain tags
   root_volume_size = 10
   root_volume_type = var.root_volume_type
+  # Load the bash script into user_data 
+  user_data = "file('${path.module}/scripts/install_nginx.sh')"
 
   # Optional: pass provider if module defines its own
   providers = {
@@ -46,7 +48,7 @@ module "frontend_ec2" {
   }
 }
 
-module "backend_ec2" {
+ /* module "backend_ec2" {
   source         = "../../modules/ec2"
   environment    = var.environment
   ami            = var.ami
@@ -90,4 +92,4 @@ module "database_ec2" {
   providers = {
     aws = aws
   }
-}
+} */
