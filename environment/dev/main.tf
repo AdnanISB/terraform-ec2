@@ -39,9 +39,6 @@ module "dev_ec2" {
   }  # pass plain tags
   root_volume_size = 10
   root_volume_type = var.root_volume_type
-  # Load the bash script into user_data 
-  user_data = "file('${path.module}/scripts/install_nginx.sh')"
-
   # Optional: pass provider if module defines its own
   providers = {
     aws = aws
