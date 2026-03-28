@@ -28,6 +28,9 @@ resource "aws_instance" "ec2" {
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
+  # Load the bash script into user_data 
+  user_data = file("${path.module}/scripts/install_nginx.sh")
+
   tags = {
     Name        = "${var.tags["Name"]}-${count.index + 1}"
     Environment = var.environment
